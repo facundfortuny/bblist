@@ -1,0 +1,96 @@
+---
+import Base from '../../layouts/Base.astro';
+import { sanityClient } from 'sanity:client';
+import { urlFor } from '../../sanity/image';
+import {
+  giftBySlugQuery,
+  giftSlugsQuery,
+  type Gift,
+} from '../../sanity/queries';
+
+export async function getStaticPaths() {
+  const slugs = await sanityClient.fetch<string[]>(giftSlugsQuery);
+  return slugs.map((slug) => ({ params: { slug } }));
+}
+
+const { slug } = Astro.params;
+const gift = await sanityClient.fetch<Gift | null>(giftBySlugQuery, { slug });
+
+if (!gift) {
+  return Astro.redirect('/');
+}
+
+const formattedPrice =
+  typeof gift.priceApprox === 'number'
+    ? new Intl.NumberFormat('es-ES', {
+        style: 'currency',
+        currency: 'EUR',
+        maximumFractionDigits: 0,
+      }).format(gift.priceApprox)
+    : null;
+
+const imageUrl = gift.image
+  ? urlFor(gift.image).width(1600).auto('format').url()
+  : null;
+---
+
+<Base title={`${gift.title} · Lista de regalos`} description={gift.description}>
+  <main class="mx-auto max-w-3xl px-5 py-12 sm:py-16">
+    <a
+      href="/"
+      class="mb-8 inline-flex items-center gap-1 text-sm text-[var(--color-ink)]/60 hover:text-[var(--color-ink)]"
+    >
+      ← Volver a la lista
+    </a>
+
+    {
+      imageUrl && (
+        <div class="mb-8 overflow-hidden rounded-2xl bg-[var(--color-blush)]/30 ring-1 ring-black/5">
+          <img
+            src={imageUrl}
+            alt={gift.title}
+            class="aspect-square w-full object-cover sm:aspect-[4/3]"
+            loading="lazy"
+            decoding="async"
+          />
+        </div>
+      )
+    }
+
+    <header class="mb-6 flex items-start justify-between gap-4">
+      <h1 class="text-3xl font-semibold leading-tight sm:text-4xl">{gift.title}</h1>
+      {
+        formattedPrice && (
+          <span class="shrink-0 rounded-full bg-[var(--color-mint)] px-3 py-1.5 text-sm font-medium">
+            {formattedPrice}
+          </span>
+        )
+      }
+    </header>
+
+    {
+      gift.description && (
+        <p class="mb-6 whitespace-pre-line text-lg leading-relaxed text-[var(--color-ink)]/80">
+          {gift.description}
+        </p>
+      )
+    }
+
+    {
+      gift.notes && (
+        <p class="mb-8 rounded-xl bg-white p-4 text-sm italic text-[var(--color-ink)]/70 ring-1 ring-black/5">
+          {gift.notes}
+        </p>
+      )
+    }
+
+    <a
+      href={gift.externalUrl}
+      target="_blank"
+      rel="noopener noreferrer"
+      class="inline-flex items-center justify-center rounded-full bg-[var(--color-ink)] px-6 py-3 text-base font-medium text-[var(--color-cream)] transition hover:bg-[var(--color-ink)]/85"
+    >
+      Comprar →
+    </a>
+  </main>
+</Base>

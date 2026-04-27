@@ -1,0 +1,45 @@
+---
+import Base from '../layouts/Base.astro';
+import GiftCard from '../components/GiftCard.astro';
+import { sanityClient } from 'sanity:client';
+import { availableGiftsQuery, type Gift } from '../sanity/queries';
+
+const gifts = await sanityClient.fetch<Gift[]>(availableGiftsQuery);
+---
+
+<Base>
+  <main class="mx-auto max-w-6xl px-5 py-16 sm:py-20">
+    <header class="mb-12 max-w-2xl">
+      <p class="mb-3 text-sm uppercase tracking-[0.2em] text-[var(--color-ink)]/50">
+        Lista de regalos
+      </p>
+      <h1 class="text-4xl font-semibold leading-tight sm:text-5xl">
+        Bienvenidos al mundo, pequeñín 🍼
+      </h1>
+      <p class="mt-5 text-lg leading-relaxed text-[var(--color-ink)]/75">
+        Hemos preparado una lista de cosas que nos harían mucha ilusión recibir.
+        Cualquier regalo, por pequeño que sea, será bienvenido con todo el cariño.
+      </p>
+    </header>
+
+    {
+      gifts.length === 0 ? (
+        <p class="rounded-2xl bg-white p-8 text-center text-[var(--color-ink)]/60 ring-1 ring-black/5">
+          La lista está casi lista. Vuelve pronto ✨
+        </p>
+      ) : (
+        <ul class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {gifts.map((gift) => (
+            <li>
+              <GiftCard gift={gift} />
+            </li>
+          ))}
+        </ul>
+      )
+    }
+
+    <footer class="mt-20 text-center text-sm text-[var(--color-ink)]/50">
+      Hecho con cariño 💛
+    </footer>
+  </main>
+</Base>

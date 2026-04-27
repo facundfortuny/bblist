@@ -22,7 +22,8 @@ pnpm-debug.log*
 .sanity/
 
 # Claude Code local state
-.claude/
+.claude/settings.local.json
+.claude/scheduled_tasks.lock
 
 # macOS-specific files
 .DS_Store

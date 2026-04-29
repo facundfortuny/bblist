@@ -10,7 +10,7 @@ const { gift } = Astro.props;
 
 const formattedPrice =
   typeof gift.priceApprox === 'number'
-    ? new Intl.NumberFormat('es-ES', {
+    ? new Intl.NumberFormat('ca-ES', {
         style: 'currency',
         currency: 'EUR',
         maximumFractionDigits: 0,

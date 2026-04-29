@@ -2,12 +2,12 @@ import { defineType, defineField } from 'sanity';
 
 export const gift = defineType({
   name: 'gift',
-  title: 'Regalo',
+  title: 'Regal',
   type: 'document',
   fields: [
     defineField({
       name: 'title',
-      title: 'Título',
+      title: 'Títol',
       type: 'string',
       validation: (rule) => rule.required().min(1).max(120),
     }),
@@ -20,19 +20,19 @@ export const gift = defineType({
     }),
     defineField({
       name: 'description',
-      title: 'Descripción',
+      title: 'Descripció',
       type: 'text',
       rows: 3,
     }),
     defineField({
       name: 'image',
-      title: 'Imagen',
+      title: 'Imatge',
       type: 'image',
       options: { hotspot: true },
     }),
     defineField({
       name: 'externalUrl',
-      title: 'Enlace de compra',
+      title: 'Enllaç de compra',
       type: 'url',
       validation: (rule) =>
         rule
@@ -41,43 +41,43 @@ export const gift = defineType({
     }),
     defineField({
       name: 'priceApprox',
-      title: 'Precio aproximado (€)',
+      title: 'Preu aproximat (€)',
       type: 'number',
       validation: (rule) => rule.min(0),
     }),
     defineField({
       name: 'category',
-      title: 'Categoría',
+      title: 'Categoria',
       type: 'string',
       options: {
         list: [
-          { title: 'Ropa', value: 'ropa' },
-          { title: 'Juguetes', value: 'juguetes' },
-          { title: 'Libros', value: 'libros' },
-          { title: 'Mobiliario', value: 'mobiliario' },
+          { title: 'Roba', value: 'ropa' },
+          { title: 'Joguines', value: 'juguetes' },
+          { title: 'Llibres', value: 'libros' },
+          { title: 'Mobiliari', value: 'mobiliario' },
           { title: 'Higiene', value: 'higiene' },
-          { title: 'Alimentación', value: 'alimentacion' },
-          { title: 'Otros', value: 'otros' },
+          { title: 'Alimentació', value: 'alimentacion' },
+          { title: 'Altres', value: 'otros' },
         ],
         layout: 'dropdown',
       },
     }),
     defineField({
       name: 'notes',
-      title: 'Notas',
-      description: 'Talla, color, preferencias…',
+      title: 'Notes',
+      description: 'Talla, color, preferències…',
       type: 'text',
       rows: 2,
     }),
     defineField({
       name: 'status',
-      title: 'Estado',
+      title: 'Estat',
       type: 'string',
       options: {
         list: [
           { title: 'Disponible', value: 'available' },
-          { title: 'Comprado', value: 'purchased' },
-          { title: 'Oculto', value: 'hidden' },
+          { title: 'Comprat', value: 'purchased' },
+          { title: 'Ocult', value: 'hidden' },
         ],
         layout: 'radio',
       },

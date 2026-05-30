@@ -19,7 +19,7 @@ const registryGifts: RegistryGift[] = gifts.map((gift) => ({
   url: gift.externalUrl,
   status: gift.status,
   imageUrl: gift.image
-    ? urlFor(gift.image).width(900).height(720).fit('crop').auto('format').url()
+    ? urlFor(gift.image).width(800).fit('max').auto('format').url()
     : null,
 }));
 ---

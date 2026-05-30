@@ -34,7 +34,7 @@ const formattedPrice =
     : null;
 
 const imageUrl = gift.image
-  ? urlFor(gift.image).width(1200).height(900).fit('crop').auto('format').url()
+  ? urlFor(gift.image).width(1200).fit('max').auto('format').url()
   : null;
 ---
 
@@ -44,7 +44,7 @@ const imageUrl = gift.image
       <a href="/" class="detail-back">← Tornar a la llista</a>
 
       <div class="detail-grid">
-        <figure class="detail-art" style={`background: ${cat.accent}`}>
+        <figure class="detail-art" style={`background: ${imageUrl ? '#fff' : cat.accent}`}>
           {
             imageUrl ? (
               <img

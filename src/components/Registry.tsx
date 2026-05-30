@@ -355,7 +355,7 @@ function GiftCard({
 
   return (
     <article className={'card' + (taken ? ' card--taken' : '')}>
-      <div className="card-art" style={{ background: c.accent }}>
+      <div className="card-art" style={{ background: gift.imageUrl ? 'var(--white)' : c.accent }}>
         {gift.imageUrl
           ? <img className="card-photo" src={gift.imageUrl} alt={gift.title} loading="lazy" decoding="async" />
           : <CategoryArt art={c.art} ink={c.ink} />}

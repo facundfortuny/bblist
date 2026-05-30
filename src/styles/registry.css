@@ -279,7 +279,7 @@
   overflow: hidden;
 }
 .card-art svg { width: 46%; max-width: 110px; height: auto; }
-.card-photo { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.card-photo { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; padding: 18px; }
 .card-cat {
   position: absolute; top: 14px; left: 14px; font-size: 12px; font-weight: 700;
   letter-spacing: .04em; text-transform: uppercase;
@@ -330,7 +330,7 @@
   aspect-ratio: 4/3; display: grid; place-items: center; padding: 40px;
   box-shadow: var(--elevation-card); border: var(--card-border);
 }
-.detail-photo { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.detail-photo { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; padding: 28px; }
 .detail-art svg { width: 38%; max-width: 150px; height: auto; }
 .detail-cat {
   position: absolute; top: 16px; left: 16px; font-size: 12px; font-weight: 700;

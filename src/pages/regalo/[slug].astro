@@ -2,11 +2,13 @@
 import Base from '../../layouts/Base.astro';
 import { sanityClient } from 'sanity:client';
 import { urlFor } from '../../sanity/image';
+import { catFor } from '../../sanity/categories';
 import {
   giftBySlugQuery,
   giftSlugsQuery,
   type Gift,
 } from '../../sanity/queries';
+import '../../styles/registry.css';
 
 export async function getStaticPaths() {
   const slugs = await sanityClient.fetch<string[]>(giftSlugsQuery);
@@ -20,6 +22,8 @@ if (!gift) {
   return Astro.redirect('/');
 }
 
+const cat = catFor(gift.category);
+
 const formattedPrice =
   typeof gift.priceApprox === 'number'
     ? new Intl.NumberFormat('ca-ES', {
@@ -30,67 +34,75 @@ const formattedPrice =
     : null;
 
 const imageUrl = gift.image
-  ? urlFor(gift.image).width(1600).auto('format').url()
+  ? urlFor(gift.image).width(1200).height(900).fit('crop').auto('format').url()
   : null;
 ---
 
 <Base title={`${gift.title} · Llista de regals`} description={gift.description}>
-  <main class="mx-auto max-w-3xl px-5 py-12 sm:py-16">
-    <a
-      href="/"
-      class="mb-8 inline-flex items-center gap-1 text-sm text-[var(--color-ink)]/60 hover:text-[var(--color-ink)]"
-    >
-      ← Tornar a la llista
-    </a>
+  <div class="page">
+    <main class="detail">
+      <a href="/" class="detail-back">← Tornar a la llista</a>
 
-    {
-      imageUrl && (
-        <div class="mb-8 overflow-hidden rounded-2xl bg-[var(--color-blush)]/30 ring-1 ring-black/5">
-          <img
-            src={imageUrl}
-            alt={gift.title}
-            class="aspect-square w-full object-cover sm:aspect-[4/3]"
-            loading="lazy"
-            decoding="async"
-          />
+      <div class="detail-grid">
+        <figure class="detail-art" style={`background: ${cat.accent}`}>
+          {
+            imageUrl ? (
+              <img
+                class="detail-photo"
+                src={imageUrl}
+                alt={gift.title}
+                loading="lazy"
+                decoding="async"
+              />
+            ) : (
+              <svg viewBox="0 0 64 64" aria-hidden="true">
+                <path
+                  d="M32 12l6 13 14 1-11 9 4 14-13-8-13 8 4-14-11-9 14-1z"
+                  fill={cat.ink}
+                  opacity="0.14"
+                />
+                <path
+                  d="M32 12l6 13 14 1-11 9 4 14-13-8-13 8 4-14-11-9 14-1z"
+                  fill="none"
+                  stroke={cat.ink}
+                  stroke-width="3.4"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            )
+          }
+          <span class="detail-cat" style={`color: ${cat.ink}`}>{cat.label}</span>
+        </figure>
+
+        <div class="detail-info">
+          <span class="eyebrow">Llista de naixement</span>
+          <h1 class="detail-title">{gift.title}</h1>
+          {formattedPrice && <span class="detail-price">{formattedPrice}</span>}
+
+          {gift.description && <p class="detail-desc">{gift.description}</p>}
+
+          {
+            gift.notes && (
+              <p class="detail-notes">
+                <span class="detail-notes-k">Preferència:</span> {gift.notes}
+              </p>
+            )
+          }
+
+          <div class="detail-actions">
+            <a
+              class="btn btn-primary"
+              href={gift.externalUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Veure on comprar-ho →
+            </a>
+            <a class="btn btn-ghost" href="/">Tornar</a>
+          </div>
         </div>
-      )
-    }
-
-    <header class="mb-6 flex items-start justify-between gap-4">
-      <h1 class="text-3xl font-semibold leading-tight sm:text-4xl">{gift.title}</h1>
-      {
-        formattedPrice && (
-          <span class="shrink-0 rounded-full bg-[var(--color-mint)] px-3 py-1.5 text-sm font-medium">
-            {formattedPrice}
-          </span>
-        )
-      }
-    </header>
-
-    {
-      gift.description && (
-        <p class="mb-6 whitespace-pre-line text-lg leading-relaxed text-[var(--color-ink)]/80">
-          {gift.description}
-        </p>
-      )
-    }
-
-    {
-      gift.notes && (
-        <p class="mb-8 rounded-xl bg-white p-4 text-sm italic text-[var(--color-ink)]/70 ring-1 ring-black/5">
-          {gift.notes}
-        </p>
-      )
-    }
-
-    <a
-      href={gift.externalUrl}
-      target="_blank"
-      rel="noopener noreferrer"
-      class="inline-flex items-center justify-center rounded-full bg-[var(--color-ink)] px-6 py-3 text-base font-medium text-[var(--color-cream)] transition hover:bg-[var(--color-ink)]/85"
-    >
-      Comprar →
-    </a>
-  </main>
+      </div>
+    </main>
+  </div>
 </Base>

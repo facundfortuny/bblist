@@ -42,3 +42,13 @@ export const giftBySlugQuery = `
     priceApprox, category, notes, status
   }
 `;
+
+export interface ReservationDoc {
+  _id: string;
+  giftId: string;
+  name?: string;
+}
+
+export const reservationsQuery = `
+  *[_type == "reservation"]{ _id, giftId, name }
+`;

@@ -14,15 +14,40 @@ if (!token) {
 
 const gifts = [
   {
-    title: 'Soporte para bañera Stokke Flexi Bath',
+    title: "Arc d'activitats de fusta FSC",
     description:
-      'Soporte ergonómico que posiciona al bebé a altura cómoda. Incluye patas antideslizantes, bloqueo seguro y se pliega para fácil transporte. Apto desde recién nacido hasta 10 kg.',
-    externalUrl: 'https://www.stokke.com/ESP/es-es/bano/538700.html',
-    priceApprox: 69,
+      "Arc d'activitats de fusta certificada FSC amb base color sàlvia i tres joguines d'estimulació per sorprendre el bebè. Es pot col·locar al parc o sobre una estora d'estimulació.",
+    externalUrl:
+      'https://www.vertbaudet.es/arco-de-actividades-de-madera-fsc-tanzania.htm?ProductId=620033342&FiltreCouleur=6730',
+    priceApprox: 45,
+    category: 'juguetes',
+    status: 'available',
+    imageUrl:
+      'https://media.vertbaudet.es/Pictures/vertbaudet/208640/arco-de-actividades-de-madera-fsc.jpg',
+  },
+  {
+    title: 'Biberó MAM Cristal Feel Good flux extra lent 90 ml',
+    description:
+      "Biberó de vidre de borosilicat resistent a altes temperatures, apte per a rentaplats i microones. Tetina SkinSoft de silicona amb un 94% d'acceptació, imita la pell materna. Flux extra lent ideal per combinar amb la lactància materna. Lliure de BPA i BPS.",
+    externalUrl:
+      'https://www.atida.com/es-es/mam-biberon-cristal-feel-good-flujo-extra-lento-neutro-brillante-0m-90-ml',
+    priceApprox: 10,
+    category: 'alimentacion',
+    status: 'available',
+    imageUrl:
+      'https://assets.atida.com/transform/aa00456f-55f5-4ec0-9fd5-16e3a30eab99/MAM-Biberon-Cristal-Feel-Good-Flujo-Extra-Lento-Neutro-Brillante-0m-90-ml?io=transform:extend,width:800,height:800',
+  },
+  {
+    title: 'Weleda Set de regal Benvingut Bebè 2025',
+    description:
+      "Set de cura per al bebè amb ingredients 100% naturals i calèndula com a ingredient estrella. Inclou una rutina completa de cura recomanada per experts, amb protecció des del primer dia.",
+    externalUrl:
+      'https://www.atida.com/es-es/weleda-set-de-regalo-bienvenido-bebe-2025',
+    priceApprox: 34,
     category: 'higiene',
     status: 'available',
     imageUrl:
-      'https://www.stokke.com/dw/image/v2/AAQF_PRD/on/demandware.static/-/Sites-stokke-master-catalog/default/dwf967ec4b/images/inriverimages/mainview/Stokke%20FlexiBath%20Stand%20210426-1254_eCom.jpg',
+      'https://assets.atida.com/transform/a0cc902c-47fe-415f-b2b4-66133621ac4c/Weleda-Set-de-Regalo-Bienvenido-Bebe-2025?io=transform:extend,width:800,height:800',
   },
 ];
 

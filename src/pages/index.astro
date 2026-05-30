@@ -1,41 +1,29 @@
 ---
 import Base from '../layouts/Base.astro';
-import GiftCard from '../components/GiftCard.astro';
+import Registry, { type RegistryGift } from '../components/Registry.tsx';
 import { sanityClient } from 'sanity:client';
+import { urlFor } from '../sanity/image';
 import { availableGiftsQuery, type Gift } from '../sanity/queries';
+import '../styles/registry.css';
 
 const gifts = await sanityClient.fetch<Gift[]>(availableGiftsQuery);
+
+// Map Sanity documents to the shape the registry island expects.
+const registryGifts: RegistryGift[] = gifts.map((gift) => ({
+  id: gift._id,
+  title: gift.title,
+  category: gift.category ?? 'otros',
+  price: typeof gift.priceApprox === 'number' ? gift.priceApprox : null,
+  description: gift.description,
+  notes: gift.notes,
+  url: gift.externalUrl,
+  status: gift.status,
+  imageUrl: gift.image
+    ? urlFor(gift.image).width(900).height(720).fit('crop').auto('format').url()
+    : null,
+}));
 ---
 
 <Base>
-  <main class="mx-auto max-w-6xl px-5 py-16 sm:py-20">
-    <header class="mb-12 max-w-2xl">
-      <p class="mb-3 text-sm uppercase tracking-[0.2em] text-[var(--color-ink)]/50">
-        Llista de regals
-      </p>
-      <h1 class="text-4xl font-semibold leading-tight sm:text-5xl">
-        Benvingut al món, petitó 🍼
-      </h1>
-      <p class="mt-5 text-lg leading-relaxed text-[var(--color-ink)]/75">
-        Hem preparat una llista de coses que ens faria molta il·lusió rebre.
-        Qualsevol regal, per petit que sigui, serà benvingut amb tot el carinyo.
-      </p>
-    </header>
-
-    {
-      gifts.length === 0 ? (
-        <p class="rounded-2xl bg-white p-8 text-center text-[var(--color-ink)]/60 ring-1 ring-black/5">
-          La llista està quasi a punt. Torna aviat ✨
-        </p>
-      ) : (
-        <ul class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {gifts.map((gift) => (
-            <li>
-              <GiftCard gift={gift} />
-            </li>
-          ))}
-        </ul>
-      )
-    }
-  </main>
+  <Registry client:load gifts={registryGifts} />
 </Base>

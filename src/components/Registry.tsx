@@ -382,9 +382,7 @@ function GiftCard({
             <button className="btn btn-soft" onClick={() => onRelease(gift)}>Alliberar-lo</button>
           )}
           {taken && !mine && (
-            <span className="taken-note">
-              {reserved && reserved.name ? `Reservat per ${reserved.name}` : 'Algú ja se’n cuida'}
-            </span>
+            <span className="taken-note">Algú ja se’n cuida</span>
           )}
         </div>
       </div>

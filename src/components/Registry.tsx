@@ -158,14 +158,7 @@ function useCountdown(target: Date): Remaining {
   return t;
 }
 
-type Guess = { guess: string; from: string; ts: number };
-
 function GuessGame() {
-  const [guesses, setGuesses] = useState<Guess[]>([]);
-  useEffect(() => {
-    try { setGuesses(JSON.parse(localStorage.getItem('bblist_guesses') || '[]')); }
-    catch { /* ignore */ }
-  }, []);
   const [name, setName] = useState('');
   const [from, setFrom] = useState('');
   const [reply, setReply] = useState('');
@@ -175,21 +168,16 @@ function GuessGame() {
     const g = name.trim();
     if (!g) return;
     const f = from.trim();
-    // Local cloud for instant feedback…
-    const next = [{ guess: g, from: f, ts: Date.now() }, ...guesses].slice(0, 40);
-    setGuesses(next);
-    localStorage.setItem('bblist_guesses', JSON.stringify(next));
+    // Acknowledge to the guest, but don't reveal what anyone proposed.
     setReply(GUESS_REPLIES[Math.floor(Math.random() * GUESS_REPLIES.length)]);
     setName(''); setFrom('');
-    // …and send it to the parents (saved to Sanity, read in Studio).
+    // Sent privately to the parents (saved to Sanity, read in Studio).
     fetch('/api/guess', {
       method: 'POST',
       headers: { 'content-type': 'application/json' },
       body: JSON.stringify({ guess: g, from: f }),
-    }).catch(() => { /* the local cloud already acknowledged it */ });
+    }).catch(() => { /* the reply already acknowledged it */ });
   };
-
-  const recent = guesses.slice(0, 6);
 
   return (
     <form className="guess" onSubmit={submit}>
@@ -212,16 +200,6 @@ function GuessGame() {
         maxLength={24}
       />
       {reply && <div className="guess-reply">{reply}</div>}
-      {recent.length > 0 && (
-        <div className="guess-cloud">
-          <span className="guess-count">
-            {guesses.length} {guesses.length === 1 ? 'proposta' : 'propostes'}:
-          </span>
-          {recent.map((g, i) => (
-            <span className="guess-chip" key={i}>{g.guess}</span>
-          ))}
-        </div>
-      )}
     </form>
   );
 }

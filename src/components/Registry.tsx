@@ -417,11 +417,7 @@ export default function Registry({ gifts }: { gifts: RegistryGift[] }) {
     }
   };
 
-  const counts = {
-    total: gifts.length,
-    available: gifts.filter((g) => !isTaken(g)).length,
-    reserved: gifts.filter((g) => isTaken(g)).length,
-  };
+  const counts = { total: gifts.length };
 
   const band = PRICE_BANDS.find((b) => b.id === filters.price)!;
   const filtered = gifts.filter((g) => {
@@ -440,9 +436,6 @@ export default function Registry({ gifts }: { gifts: RegistryGift[] }) {
             <span className="kicker">La llista</span>
             <h2 className="catalog-title">Coses que ens farien feliços</h2>
           </div>
-          <p className="catalog-sub">
-            {counts.available} de {counts.total} encara disponibles. Cap pressió: tot el que arribi serà benvingut.
-          </p>
         </div>
 
         <Toolbar filters={filters} setFilters={setFilters} counts={counts} />

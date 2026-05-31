@@ -458,7 +458,6 @@ export default function Registry({ gifts }: { gifts: RegistryGift[] }) {
 
         <footer className="foot">
           <div className="foot-mark">bb<span>list</span></div>
-          <p>Fet amb il·lusió esperant la persona més important. · El nom, ben aviat.</p>
         </footer>
       </main>
 

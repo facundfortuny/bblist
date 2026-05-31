@@ -45,16 +45,6 @@ const AVAIL = [
   { id: 'reserved', label: 'Ja triats' },
 ];
 
-const DUE_DATE = new Date('2026-07-08T00:00:00');
-
-const GUESS_REPLIES = [
-  'Bona proposta! La guardem a la llista secreta.',
-  'Ui, aquesta ens agrada… però no direm res.',
-  'Apuntat! Potser sí, potser no.',
-  'Interessant elecció. El secret continua ben guardat.',
-  'Gràcies! Ningú ho ha encertat… de moment.',
-];
-
 /* ------------------------------------------------- category illustrations */
 
 function CategoryArt({ art, ink, style }: { art: ArtKey; ink: string; style?: CSSProperties }) {
@@ -128,154 +118,6 @@ function CategoryArt({ art, ink, style }: { art: ArtKey; ink: string; style?: CS
     <svg viewBox="0 0 64 64" style={s} aria-hidden="true">
       {arts[art] ?? arts.star}
     </svg>
-  );
-}
-
-/* ----------------------------------------------------------------- hero */
-
-type Remaining = { d: number; h: number; m: number; s: number };
-const ZERO: Remaining = { d: 0, h: 0, m: 0, s: 0 };
-
-function useCountdown(target: Date): Remaining {
-  // Start at zero so the server-rendered HTML and the first client render
-  // match; the real value (which depends on the current time) is filled in
-  // after mount, avoiding a hydration mismatch.
-  const [t, setT] = useState<Remaining>(ZERO);
-  useEffect(() => {
-    const calc = (): Remaining => {
-      const diff = Math.max(0, target.getTime() - Date.now());
-      return {
-        d: Math.floor(diff / 86400000),
-        h: Math.floor((diff % 86400000) / 3600000),
-        m: Math.floor((diff % 3600000) / 60000),
-        s: Math.floor((diff % 60000) / 1000),
-      };
-    };
-    setT(calc());
-    const id = setInterval(() => setT(calc()), 1000);
-    return () => clearInterval(id);
-  }, []);
-  return t;
-}
-
-function GuessGame() {
-  const [name, setName] = useState('');
-  const [from, setFrom] = useState('');
-  const [reply, setReply] = useState('');
-
-  const submit = (e: React.FormEvent) => {
-    e.preventDefault();
-    const g = name.trim();
-    if (!g) return;
-    const f = from.trim();
-    // Acknowledge to the guest, but don't reveal what anyone proposed.
-    setReply(GUESS_REPLIES[Math.floor(Math.random() * GUESS_REPLIES.length)]);
-    setName(''); setFrom('');
-    // Sent privately to the parents (saved to Sanity, read in Studio).
-    fetch('/api/guess', {
-      method: 'POST',
-      headers: { 'content-type': 'application/json' },
-      body: JSON.stringify({ guess: g, from: f }),
-    }).catch(() => { /* the reply already acknowledged it */ });
-  };
-
-  return (
-    <form className="guess" onSubmit={submit}>
-      <label className="guess-label">Atreveix-te a endevinar el nom</label>
-      <div className="guess-row">
-        <input
-          className="guess-input"
-          placeholder="El teu nom preferit…"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          maxLength={24}
-        />
-        <button className="guess-btn" type="submit">Endevina</button>
-      </div>
-      <input
-        className="guess-from"
-        placeholder="De part de… (opcional)"
-        value={from}
-        onChange={(e) => setFrom(e.target.value)}
-        maxLength={24}
-      />
-      {reply && <div className="guess-reply">{reply}</div>}
-    </form>
-  );
-}
-
-function Hero({ stats }: { stats: { available: number; reserved: number } }) {
-  const c = useCountdown(DUE_DATE);
-  const unit = (v: number, l: string) => (
-    <div className="cd-unit">
-      <span className="cd-num">{String(v).padStart(2, '0')}</span>
-      <span className="cd-lbl">{l}</span>
-    </div>
-  );
-  return (
-    <header className="hero">
-      <div className="hero-glow hero-glow-a" />
-      <div className="hero-inner">
-        <div className="hero-main">
-          <span className="eyebrow">Llista de naixement · Estiu 2026</span>
-          <h1 className="hero-title">
-            Estem esperant
-            <br />en
-          </h1>
-          <div className="secret-name" aria-label="Nom encara secret">
-            {[0, 1, 2, 3, 4].map((i) => (
-              <span className="secret-tile" key={i} style={{ animationDelay: `${i * 0.18}s` }}>
-                <span className="secret-q">?</span>
-              </span>
-            ))}
-          </div>
-          <p className="hero-lead">
-            El nom encara és el secret més ben guardat de la família. Mentre el revelem,
-            us deixem la llista de coses que ens farien falta per donar-li la benvinguda.
-            <strong> Trieu el que us faci il·lusió i marqueu-ho perquè ningú repeteixi.</strong>
-          </p>
-          <GuessGame />
-        </div>
-
-        <aside className="hero-side">
-          <div className="peek">
-            <div className="peek-art">
-              <svg viewBox="0 0 120 120" aria-hidden="true">
-                <circle cx="60" cy="60" r="54" fill="var(--white)" opacity="0.55" />
-                <path
-                  d="M44 52c0-9 7-16 16-16s16 7 16 14c0 9-10 11-10 19"
-                  fill="none" stroke="var(--primary)" strokeWidth="6" strokeLinecap="round"
-                />
-                <circle cx="66" cy="86" r="4.5" fill="var(--primary)" />
-              </svg>
-            </div>
-            <span className="peek-cap">Qui serà?</span>
-          </div>
-
-          <div className="countdown">
-            <span className="cd-title">Arribada prevista</span>
-            <div className="cd-grid">
-              {unit(c.d, 'dies')}
-              {unit(c.h, 'h')}
-              {unit(c.m, 'min')}
-              {unit(c.s, 'seg')}
-            </div>
-            <span className="cd-date">8 de juliol de 2026</span>
-          </div>
-
-          <div className="hero-stats">
-            <div className="hstat">
-              <span className="hstat-num">{stats.available}</span>
-              <span className="hstat-lbl">disponibles</span>
-            </div>
-            <div className="hstat">
-              <span className="hstat-num">{stats.reserved}</span>
-              <span className="hstat-lbl">ja triats</span>
-            </div>
-          </div>
-        </aside>
-      </div>
-    </header>
   );
 }
 
@@ -592,8 +434,6 @@ export default function Registry({ gifts }: { gifts: RegistryGift[] }) {
 
   return (
     <div className="page">
-      <Hero stats={counts} />
-
       <main className="catalog">
         <div className="catalog-head">
           <div>

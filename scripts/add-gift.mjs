@@ -14,40 +14,39 @@ if (!token) {
 
 const gifts = [
   {
-    title: "Arc d'activitats de fusta FSC",
+    title: 'Sac cobrepeus mitja estació Praliné rayas matcha TOG 2,5',
     description:
-      "Arc d'activitats de fusta certificada FSC amb base color sàlvia i tres joguines d'estimulació per sorprendre el bebè. Es pot col·locar al parc o sobre una estora d'estimulació.",
+      "Folre per a la cadira amb cobrepeus integrat de la col·lecció Praliné, estampat vichy/ratlles matcha. Encoixinat extraïble i teixit antitranspirant per evitar la suor. Adaptable a la majoria de cotxets i rentable a 30°C.",
     externalUrl:
-      'https://www.vertbaudet.es/arco-de-actividades-de-madera-fsc-tanzania.htm?ProductId=620033342&FiltreCouleur=6730',
-    priceApprox: 45,
+      'https://walkingmum.com/en/product/footmuff-midseason-praline-vichy-strips-matcha-tog-25/',
+    priceApprox: 100,
+    category: 'ropa',
+    status: 'available',
+    imageUrl: 'https://walkingmum.com/wp-content/uploads/2026/02/1120800699_a.jpg',
+  },
+  {
+    title: 'Funda per a cadireta de cotxe Praliné rayas matcha',
+    description:
+      "Funda universal per a la cadireta de cotxe (grup 0/0+ i grup 1) de la col·lecció Praliné rayas matcha. Teixit de cotó transpirable que redueix la suor i millora el confort als trajectes. Rentable a 30°C.",
+    externalUrl:
+      'https://walkingmum.com/en/product/auto-seat-liner-praline-strips-matcha/',
+    priceApprox: 25,
+    category: 'otros',
+    status: 'available',
+    imageUrl: 'https://walkingmum.com/wp-content/uploads/2026/02/1120800788_a.jpg',
+  },
+  {
+    title: 'Set per jugar de panxa avall Taft Toys',
+    description:
+      "Set per jugar de panxa avall (tummy time) de Taft Toys. Inclou mirall, sonalls i elements sensorials de colors per estimular el bebè mentre reforça el coll i les espatlles.",
+    externalUrl:
+      'https://www.vertbaudet.es/set-para-jugar-boca-abajo-para-bebe-taft-toys-multicolor.htm?ProductId=341016755&FiltreCouleur=0201',
+    priceApprox: 30,
     category: 'juguetes',
     status: 'available',
-    imageUrl:
-      'https://media.vertbaudet.es/Pictures/vertbaudet/208640/arco-de-actividades-de-madera-fsc.jpg',
-  },
-  {
-    title: 'Biberó MAM Cristal Feel Good flux extra lent 90 ml',
-    description:
-      "Biberó de vidre de borosilicat resistent a altes temperatures, apte per a rentaplats i microones. Tetina SkinSoft de silicona amb un 94% d'acceptació, imita la pell materna. Flux extra lent ideal per combinar amb la lactància materna. Lliure de BPA i BPS.",
-    externalUrl:
-      'https://www.atida.com/es-es/mam-biberon-cristal-feel-good-flujo-extra-lento-neutro-brillante-0m-90-ml',
-    priceApprox: 10,
-    category: 'alimentacion',
-    status: 'available',
-    imageUrl:
-      'https://assets.atida.com/transform/aa00456f-55f5-4ec0-9fd5-16e3a30eab99/MAM-Biberon-Cristal-Feel-Good-Flujo-Extra-Lento-Neutro-Brillante-0m-90-ml?io=transform:extend,width:800,height:800',
-  },
-  {
-    title: 'Weleda Set de regal Benvingut Bebè 2025',
-    description:
-      "Set de cura per al bebè amb ingredients 100% naturals i calèndula com a ingredient estrella. Inclou una rutina completa de cura recomanada per experts, amb protecció des del primer dia.",
-    externalUrl:
-      'https://www.atida.com/es-es/weleda-set-de-regalo-bienvenido-bebe-2025',
-    priceApprox: 34,
-    category: 'higiene',
-    status: 'available',
-    imageUrl:
-      'https://assets.atida.com/transform/a0cc902c-47fe-415f-b2b4-66133621ac4c/Weleda-Set-de-Regalo-Bienvenido-Bebe-2025?io=transform:extend,width:800,height:800',
+    // Vertbaudet blocks image hotlinking/scraping — no image; the UI falls back
+    // to the category illustration. Add an imageUrl here later if you have one.
+    imageUrl: null,
   },
 ];
 
@@ -71,17 +70,23 @@ const client = createClient({
 for (const gift of gifts) {
   console.log(`\n→ ${gift.title}`);
 
-  const imageRes = await fetch(gift.imageUrl);
-  if (!imageRes.ok) {
-    throw new Error(`Failed to download image (${imageRes.status}): ${gift.imageUrl}`);
-  }
-  const imageBuffer = Buffer.from(await imageRes.arrayBuffer());
-  const imageFilename = gift.imageUrl.split('/').pop()?.split('?')[0] ?? 'gift.jpg';
+  let image;
+  if (gift.imageUrl) {
+    const imageRes = await fetch(gift.imageUrl);
+    if (!imageRes.ok) {
+      throw new Error(`Failed to download image (${imageRes.status}): ${gift.imageUrl}`);
+    }
+    const imageBuffer = Buffer.from(await imageRes.arrayBuffer());
+    const imageFilename = gift.imageUrl.split('/').pop()?.split('?')[0] ?? 'gift.jpg';
 
-  console.log(`  Uploading image (${imageBuffer.byteLength} bytes)…`);
-  const asset = await client.assets.upload('image', imageBuffer, {
-    filename: imageFilename,
-  });
+    console.log(`  Uploading image (${imageBuffer.byteLength} bytes)…`);
+    const asset = await client.assets.upload('image', imageBuffer, {
+      filename: imageFilename,
+    });
+    image = { _type: 'image', asset: { _type: 'reference', _ref: asset._id } };
+  } else {
+    console.log('  No image — using the category illustration fallback.');
+  }
 
   const doc = await client.create({
     _type: 'gift',
@@ -92,10 +97,7 @@ for (const gift of gifts) {
     priceApprox: gift.priceApprox,
     category: gift.category,
     status: gift.status,
-    image: {
-      _type: 'image',
-      asset: { _type: 'reference', _ref: asset._id },
-    },
+    ...(image ? { image } : {}),
   });
 
   console.log(`  Created ${doc._id} — slug: ${doc.slug.current}`);

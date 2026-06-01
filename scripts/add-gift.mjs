@@ -18,7 +18,7 @@ const gifts = [
     description:
       "Folre per a la cadira amb cobrepeus integrat de la col·lecció Praliné, estampat vichy/ratlles matcha. Encoixinat extraïble i teixit antitranspirant per evitar la suor. Adaptable a la majoria de cotxets i rentable a 30°C.",
     externalUrl:
-      'https://walkingmum.com/en/product/footmuff-midseason-praline-vichy-strips-matcha-tog-25/',
+      'https://walkingmum.com/producto/saco-silla-entretiempo-praline-vichy-rayas-matcha-tog-25/',
     priceApprox: 100,
     category: 'ropa',
     status: 'available',
@@ -29,7 +29,7 @@ const gifts = [
     description:
       "Funda universal per a la cadireta de cotxe (grup 0/0+ i grup 1) de la col·lecció Praliné rayas matcha. Teixit de cotó transpirable que redueix la suor i millora el confort als trajectes. Rentable a 30°C.",
     externalUrl:
-      'https://walkingmum.com/en/product/auto-seat-liner-praline-strips-matcha/',
+      'https://walkingmum.com/producto/colchoneta-auto-praline-rayas-matcha/',
     priceApprox: 25,
     category: 'otros',
     status: 'available',

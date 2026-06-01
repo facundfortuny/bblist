@@ -1,7 +1,7 @@
 /* Bblist — interactive registry island (ported from the Claude Design handoff).
-   Hero (secret name + countdown + guess game), editorial gift grid with
-   category illustrations / real photos, filters, reserve flow (modal + toast +
-   confetti). Reserve state is client-side (localStorage); the site is static. */
+   Countdown + editorial gift grid with category illustrations / real photos,
+   filters, and the reserve flow (modal + toast + confetti). Reservations are
+   shared via the /api/* Cloudflare functions; the gift list is built statically. */
 
 import {
   useCallback,

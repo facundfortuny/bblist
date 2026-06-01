@@ -18,6 +18,9 @@ const {
 const site = Astro.site ?? new URL('https://bblist.pages.dev');
 const ogImage = new URL(image, site).href;
 const canonical = new URL(Astro.url.pathname, site).href;
+
+// Privacy-friendly Cloudflare Web Analytics — only loads when a token is set.
+const cfBeacon = import.meta.env.PUBLIC_CF_BEACON_TOKEN as string | undefined;
 ---
 
 <!doctype html>
@@ -26,6 +29,8 @@ const canonical = new URL(Astro.url.pathname, site).href;
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
+    <!-- Private family list: shareable by link, but keep it out of search engines. -->
+    <meta name="robots" content="noindex, nofollow" />
     <link rel="canonical" href={canonical} />
 
     <!-- Open Graph (WhatsApp, Telegram, Facebook…) -->
@@ -53,5 +58,15 @@ const canonical = new URL(Astro.url.pathname, site).href;
   </head>
   <body class="min-h-screen antialiased">
     <slot />
+    {
+      cfBeacon && (
+        <script
+          is:inline
+          defer
+          src="https://static.cloudflareinsights.com/beacon.min.js"
+          data-cf-beacon={`{"token": "${cfBeacon}"}`}
+        />
+      )
+    }
   </body>
 </html>

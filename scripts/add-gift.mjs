@@ -14,39 +14,16 @@ if (!token) {
 
 const gifts = [
   {
-    title: 'Sac cobrepeus mitja estació Praliné rayas matcha TOG 2,5',
+    title: 'Sac niu oval de mussolina musgo',
     description:
-      "Folre per a la cadira amb cobrepeus integrat de la col·lecció Praliné, estampat vichy/ratlles matcha. Encoixinat extraïble i teixit antitranspirant per evitar la suor. Adaptable a la majoria de cotxets i rentable a 30°C.",
+      "Sac niu oval de mussolina que abraça el nadó i l'aïlla del fred i del soroll, mantenint-li el capet protegit. La cremallera frontal permet embolicar i desembolicar-lo sense despertar-lo. Color musgo (verd), versió d'hivern.",
     externalUrl:
-      'https://walkingmum.com/producto/saco-silla-entretiempo-praline-vichy-rayas-matcha-tog-25/',
-    priceApprox: 100,
+      'https://minicoton.com/en/products/oval-muslin-moss-bag-2?variant=45215368347838',
+    priceApprox: 70,
     category: 'ropa',
     status: 'available',
-    imageUrl: 'https://walkingmum.com/wp-content/uploads/2026/02/1120800699_a.jpg',
-  },
-  {
-    title: 'Funda per a cadireta de cotxe Praliné rayas matcha',
-    description:
-      "Funda universal per a la cadireta de cotxe (grup 0/0+ i grup 1) de la col·lecció Praliné rayas matcha. Teixit de cotó transpirable que redueix la suor i millora el confort als trajectes. Rentable a 30°C.",
-    externalUrl:
-      'https://walkingmum.com/producto/colchoneta-auto-praline-rayas-matcha/',
-    priceApprox: 25,
-    category: 'otros',
-    status: 'available',
-    imageUrl: 'https://walkingmum.com/wp-content/uploads/2026/02/1120800788_a.jpg',
-  },
-  {
-    title: 'Set per jugar de panxa avall Taft Toys',
-    description:
-      "Set per jugar de panxa avall (tummy time) de Taft Toys. Inclou mirall, sonalls i elements sensorials de colors per estimular el bebè mentre reforça el coll i les espatlles.",
-    externalUrl:
-      'https://www.vertbaudet.es/set-para-jugar-boca-abajo-para-bebe-taft-toys-multicolor.htm?ProductId=341016755&FiltreCouleur=0201',
-    priceApprox: 30,
-    category: 'juguetes',
-    status: 'available',
-    // Vertbaudet blocks image hotlinking/scraping — no image; the UI falls back
-    // to the category illustration. Add an imageUrl here later if you have one.
-    imageUrl: null,
+    imageUrl:
+      'https://cdn.shopify.com/s/files/1/0567/0699/0270/files/168055-1_zVCSaP2fqC.png?v=1752435299',
   },
 ];
 

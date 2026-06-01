@@ -116,6 +116,50 @@ function CategoryArt({ art, ink, style }: { art: ArtKey; ink: string; style?: CS
   );
 }
 
+/* --------------------------------------------------------------- countdown */
+
+const DUE_DATE = new Date('2026-07-08T00:00:00');
+type Remaining = { d: number; h: number; m: number; s: number };
+const ZERO: Remaining = { d: 0, h: 0, m: 0, s: 0 };
+
+function Countdown() {
+  // Start at zero so SSR and the first client render match; the real value
+  // (depends on the current time) is filled in after mount.
+  const [t, setT] = useState<Remaining>(ZERO);
+  useEffect(() => {
+    const calc = (): Remaining => {
+      const diff = Math.max(0, DUE_DATE.getTime() - Date.now());
+      return {
+        d: Math.floor(diff / 86400000),
+        h: Math.floor((diff % 86400000) / 3600000),
+        m: Math.floor((diff % 3600000) / 60000),
+        s: Math.floor((diff % 60000) / 1000),
+      };
+    };
+    setT(calc());
+    const id = setInterval(() => setT(calc()), 1000);
+    return () => clearInterval(id);
+  }, []);
+  const unit = (v: number, l: string) => (
+    <div className="cd-unit">
+      <span className="cd-num">{String(v).padStart(2, '0')}</span>
+      <span className="cd-lbl">{l}</span>
+    </div>
+  );
+  return (
+    <div className="countdown">
+      <span className="cd-title">Arribada prevista</span>
+      <div className="cd-grid">
+        {unit(t.d, 'dies')}
+        {unit(t.h, 'h')}
+        {unit(t.m, 'min')}
+        {unit(t.s, 'seg')}
+      </div>
+      <span className="cd-date">8 de juliol de 2026</span>
+    </div>
+  );
+}
+
 /* --------------------------------------------------------------- catalog */
 
 type Filters = { cat: string; price: string; avail: string };
@@ -398,6 +442,8 @@ export default function Registry({ gifts }: { gifts: RegistryGift[] }) {
 
   return (
     <div className="page">
+      <Countdown />
+
       <main className="catalog">
         <div className="catalog-head">
           <div>

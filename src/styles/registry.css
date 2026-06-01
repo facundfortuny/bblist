@@ -78,7 +78,7 @@
 .page ::selection { background: var(--gradientLavender); }
 
 /* Display font on titles & numerals */
-.catalog-title, .modal-title, .card-title, .foot-mark {
+.catalog-title, .modal-title, .card-title, .foot-mark, .cd-num {
   font-family: var(--font-display);
 }
 
@@ -131,9 +131,24 @@
 .btn-soft:hover { background: #D5EBDD; }
 
 /* ======================================================================
+   COUNTDOWN
+   ====================================================================== */
+.countdown {
+  max-width: 520px; margin: 44px auto 0; background: var(--white);
+  border-radius: 24px; padding: 24px 28px; box-shadow: var(--elevation-card);
+  text-align: center;
+}
+.cd-title { font-size: 12px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--faint); }
+.cd-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin: 16px 0 12px; }
+.cd-unit { background: var(--tertiaryLight); border-radius: 14px; padding: 14px 4px; }
+.cd-num { display: block; font-size: 30px; font-weight: 700; color: var(--ink); line-height: 1; font-variant-numeric: tabular-nums; }
+.cd-lbl { display: block; font-size: 11px; color: var(--muted); margin-top: 5px; }
+.cd-date { font-size: 13px; color: var(--muted); font-weight: 500; }
+
+/* ======================================================================
    CATALOG
    ====================================================================== */
-.catalog { max-width: 1160px; margin: 0 auto; padding: 52px 32px 0; }
+.catalog { max-width: 1160px; margin: 0 auto; padding: 36px 32px 0; }
 .catalog-head {
   display: flex; justify-content: space-between; align-items: flex-end; gap: 24px;
   margin: 24px 0 22px; flex-wrap: wrap;

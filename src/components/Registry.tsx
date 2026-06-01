@@ -11,12 +11,7 @@ import {
   type CSSProperties,
   type ReactElement,
 } from 'react';
-import {
-  CATEGORIES,
-  CATEGORY_ORDER,
-  catFor,
-  type ArtKey,
-} from '../sanity/categories';
+import { catFor, type ArtKey } from '../sanity/categories';
 
 /* ------------------------------------------------------------------ data */
 
@@ -127,38 +122,13 @@ type Filters = { cat: string; price: string; avail: string };
 type Reservation = { name: string; mine: boolean };
 
 function Toolbar({
-  filters, setFilters, counts,
+  filters, setFilters,
 }: {
   filters: Filters;
   setFilters: React.Dispatch<React.SetStateAction<Filters>>;
-  counts: { total: number };
 }) {
-  const setCat = (id: string) => setFilters((f) => ({ ...f, cat: id }));
   return (
     <div className="toolbar">
-      <div className="tb-cats">
-        <button
-          className={'chip' + (filters.cat === 'all' ? ' is-active' : '')}
-          onClick={() => setCat('all')}
-        >
-          Tot <span className="chip-n">{counts.total}</span>
-        </button>
-        {CATEGORY_ORDER.map((id) => {
-          const c = CATEGORIES[id];
-          const active = filters.cat === id;
-          return (
-            <button
-              key={id}
-              className={'chip' + (active ? ' is-active' : '')}
-              onClick={() => setCat(id)}
-              style={active ? { background: c.accent, color: c.ink, borderColor: c.accent } : undefined}
-            >
-              <span className="chip-dot" style={{ background: c.accent }} />
-              {c.label}
-            </button>
-          );
-        })}
-      </div>
       <div className="tb-row">
         <div className="seg">
           {AVAIL.map((a) => (
@@ -417,8 +387,6 @@ export default function Registry({ gifts }: { gifts: RegistryGift[] }) {
     }
   };
 
-  const counts = { total: gifts.length };
-
   const band = PRICE_BANDS.find((b) => b.id === filters.price)!;
   const filtered = gifts.filter((g) => {
     if (filters.cat !== 'all' && g.category !== filters.cat) return false;
@@ -438,7 +406,7 @@ export default function Registry({ gifts }: { gifts: RegistryGift[] }) {
           </div>
         </div>
 
-        <Toolbar filters={filters} setFilters={setFilters} counts={counts} />
+        <Toolbar filters={filters} setFilters={setFilters} />
 
         {filtered.length === 0 ? (
           <div className="empty">No hi ha res en aquest filtre ara mateix. Prova un altre.</div>

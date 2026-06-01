@@ -142,7 +142,8 @@ function Countdown() {
   }, []);
   const unit = (v: number, l: string) => (
     <div className="cd-unit">
-      <span className="cd-num">{String(v).padStart(2, '0')}</span>
+      {/* key={v} remounts the number when it changes, replaying the tick animation */}
+      <span className="cd-num" key={v}>{String(v).padStart(2, '0')}</span>
       <span className="cd-lbl">{l}</span>
     </div>
   );
@@ -151,7 +152,7 @@ function Countdown() {
       <span className="cd-title">Arribada prevista</span>
       <div className="cd-grid">
         {unit(t.d, 'dies')}
-        {unit(t.h, 'h')}
+        {unit(t.h, 'hores')}
         {unit(t.m, 'min')}
         {unit(t.s, 'seg')}
       </div>

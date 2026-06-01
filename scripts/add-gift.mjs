@@ -1,4 +1,6 @@
 import 'dotenv/config';
+import { readFile } from 'node:fs/promises';
+import { basename } from 'node:path';
 import { createClient } from '@sanity/client';
 
 const projectId = process.env.SANITY_STUDIO_PROJECT_ID;
@@ -14,16 +16,15 @@ if (!token) {
 
 const gifts = [
   {
-    title: 'Sac niu oval de mussolina musgo',
+    title: 'Organizador asa ropa bebé rayas',
     description:
-      "Sac niu oval de mussolina que abraça el nadó i l'aïlla del fred i del soroll, mantenint-li el capet protegit. La cremallera frontal permet embolicar i desembolicar-lo sense despertar-lo. Color musgo (verd), versió d'hivern.",
+      'Organizador de tela de rayas con asa para colgar y compartimentos acolchados, ideal para guardar y tener a mano la ropa y los accesorios del bebé.',
     externalUrl:
-      'https://minicoton.com/en/products/oval-muslin-moss-bag-2?variant=45215368347838',
-    priceApprox: 70,
-    category: 'ropa',
+      'https://www.zarahome.com/es/organizador-asa-ropa-bebe-rayas-l41632049',
+    priceApprox: 25.99,
+    category: 'otros',
     status: 'available',
-    imageUrl:
-      'https://cdn.shopify.com/s/files/1/0567/0699/0270/files/168055-1_zVCSaP2fqC.png?v=1752435299',
+    imagePath: '/Users/tuareg/Downloads/41632049802-a7.webp',
   },
 ];
 
@@ -48,13 +49,21 @@ for (const gift of gifts) {
   console.log(`\n→ ${gift.title}`);
 
   let image;
-  if (gift.imageUrl) {
-    const imageRes = await fetch(gift.imageUrl);
-    if (!imageRes.ok) {
-      throw new Error(`Failed to download image (${imageRes.status}): ${gift.imageUrl}`);
+  if (gift.imagePath || gift.imageUrl) {
+    let imageBuffer;
+    let imageFilename;
+
+    if (gift.imagePath) {
+      imageBuffer = await readFile(gift.imagePath);
+      imageFilename = basename(gift.imagePath);
+    } else {
+      const imageRes = await fetch(gift.imageUrl);
+      if (!imageRes.ok) {
+        throw new Error(`Failed to download image (${imageRes.status}): ${gift.imageUrl}`);
+      }
+      imageBuffer = Buffer.from(await imageRes.arrayBuffer());
+      imageFilename = gift.imageUrl.split('/').pop()?.split('?')[0] ?? 'gift.jpg';
     }
-    const imageBuffer = Buffer.from(await imageRes.arrayBuffer());
-    const imageFilename = gift.imageUrl.split('/').pop()?.split('?')[0] ?? 'gift.jpg';
 
     console.log(`  Uploading image (${imageBuffer.byteLength} bytes)…`);
     const asset = await client.assets.upload('image', imageBuffer, {

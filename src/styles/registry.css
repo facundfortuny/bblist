@@ -363,4 +363,15 @@
 @media (max-width: 620px) {
   .catalog { padding: 32px 20px 0; }
   .grid { grid-template-columns: 1fr; }
+
+  /* countdown: tighter so 4 tiles never overflow on narrow phones */
+  .countdown { margin-top: 32px; padding: 22px 16px 20px; }
+  .cd-grid { gap: 8px; }
+  .cd-unit { padding: 14px 2px; }
+  .cd-num { font-size: 32px; }
+
+  /* filters: stack and go full-width with equal buttons (no horizontal scroll) */
+  .tb-row { flex-direction: column; gap: 10px; }
+  .seg { width: 100%; }
+  .seg-btn { flex: 1; padding: 8px 6px; font-size: 13px; text-align: center; }
 }

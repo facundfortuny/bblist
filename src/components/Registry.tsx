@@ -28,7 +28,7 @@ export type RegistryGift = {
 };
 
 const PRICE_BANDS: { id: string; label: string; test: (p: number) => boolean }[] = [
-  { id: 'all', label: 'Tots els preus', test: () => true },
+  { id: 'all', label: 'Tots', test: () => true },
   { id: 'low', label: 'Fins a 25€', test: (p) => p <= 25 },
   { id: 'mid', label: '25–75€', test: (p) => p > 25 && p <= 75 },
   { id: 'high', label: 'Més de 75€', test: (p) => p > 75 },

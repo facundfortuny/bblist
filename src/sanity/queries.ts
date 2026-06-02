@@ -26,7 +26,7 @@ export interface Gift {
 
 export const availableGiftsQuery = `
   *[_type == "gift" && status == "available"]
-    | order(_createdAt asc) {
+    | order(orderRank asc, _createdAt asc) {
       _id, title, slug, description, image, externalUrl,
       priceApprox, category, notes, status
     }

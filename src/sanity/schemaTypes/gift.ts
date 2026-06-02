@@ -1,10 +1,14 @@
 import { defineType, defineField } from 'sanity';
+import { orderRankField, orderRankOrdering } from '@sanity/orderable-document-list';
 
 export const gift = defineType({
   name: 'gift',
   title: 'Regal',
   type: 'document',
+  orderings: [orderRankOrdering],
   fields: [
+    // Manual drag-and-drop order (managed from the orderable list in Studio).
+    orderRankField({ type: 'gift' }),
     defineField({
       name: 'title',
       title: 'Títol',

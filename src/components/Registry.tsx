@@ -230,10 +230,7 @@ function GiftCard({
         )}
         <div className="card-actions">
           {!taken && (
-            <>
-              <button className="btn btn-primary" onClick={() => onReserve(gift)}>L’agafo jo</button>
-              <a className="btn btn-ghost" href={gift.url} target="_blank" rel="noreferrer">Veure</a>
-            </>
+            <button className="btn btn-primary" onClick={() => onReserve(gift)}>L’agafo jo</button>
           )}
           {taken && mine && (
             <button className="btn btn-soft" onClick={() => onRelease(gift)}>Alliberar-lo</button>
@@ -241,6 +238,7 @@ function GiftCard({
           {taken && !mine && (
             <span className="taken-note">Algú ja se’n cuida</span>
           )}
+          <a className="btn btn-ghost" href={gift.url} target="_blank" rel="noreferrer">Veure</a>
         </div>
       </div>
     </article>
